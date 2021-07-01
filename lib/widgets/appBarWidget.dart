@@ -8,7 +8,7 @@ class AppBarWidget extends PreferredSize {
     this.context, {
     this.key,
   }) : super(
-          preferredSize: Size.fromHeight(96),
+          preferredSize: const Size.fromHeight(96),
           key: key,
           child: SafeArea(
             top: true,
@@ -23,7 +23,10 @@ class AppBarWidget extends PreferredSize {
                       color: Theme.of(context).primaryColor,
                       borderRadius: BorderRadius.circular(8),
                       border: Border.all(
-                        color: Color.fromARGB(255, 36, 49, 137),
+                        color: const Color.fromARGB(255, 36, 49, 137),
+                      ),
+                      image: DecorationImage(
+                        image: NetworkImage('http://github.com/mayconsgs.png'),
                       ),
                     ),
                   ),
@@ -41,8 +44,8 @@ class AppBarWidget extends PreferredSize {
                               style: Theme.of(context)
                                   .textTheme
                                   .headline5!
-                                  .merge(
-                                      TextStyle(fontWeight: FontWeight.bold)),
+                                  .merge(const TextStyle(
+                                      fontWeight: FontWeight.bold)),
                             ),
                           ],
                         ),

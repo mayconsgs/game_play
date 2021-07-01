@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:game_play/core/appImages.dart';
 
 class SignInScreen extends StatelessWidget {
   const SignInScreen({Key? key}) : super(key: key);
@@ -20,7 +21,7 @@ class SignInScreen extends StatelessWidget {
               AspectRatio(
                 aspectRatio: 1,
                 child: SvgPicture.asset(
-                  'assets/svgs/back_lee_sin.svg',
+                  AppImages.backLeeSinSvg,
                   color: Color.fromARGB(255, 229, 28, 68),
                   fit: BoxFit.contain,
                   semanticsLabel: 'Lee Sin',
@@ -29,7 +30,7 @@ class SignInScreen extends StatelessWidget {
               AspectRatio(
                 aspectRatio: 375 / 304,
                 child: Image.asset(
-                  'assets/images/lee_sin.png',
+                  AppImages.leeSinPng,
                   fit: BoxFit.cover,
                 ),
               )

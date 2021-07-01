@@ -31,6 +31,10 @@ class MyApp extends StatelessWidget {
           bodyText1: GoogleFonts.inter(
             color: Color.fromARGB(255, 221, 227, 240),
           ),
+          bodyText2: TextStyle(
+            fontWeight: FontWeight.bold,
+            color: Color.fromARGB(255, 221, 227, 240),
+          ),
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(
@@ -44,7 +48,6 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      themeMode: ThemeMode.dark,
       home: HomeScreen(),
     );
   }
