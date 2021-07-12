@@ -1,12 +1,14 @@
-import 'dart:ui';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:game_play/controllers/authController.dart';
 import 'package:game_play/core/appImages.dart';
+import 'package:game_play/screens/homeScreen.dart';
+import 'package:get/get.dart';
 
 class SignInScreen extends StatelessWidget {
-  const SignInScreen({Key? key}) : super(key: key);
+  SignInScreen({Key? key}) : super(key: key);
+
+  final AuthController _authController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -22,7 +24,6 @@ class SignInScreen extends StatelessWidget {
                 aspectRatio: 1,
                 child: SvgPicture.asset(
                   AppImages.backLeeSinSvg,
-                  color: Color.fromARGB(255, 229, 28, 68),
                   fit: BoxFit.contain,
                   semanticsLabel: 'Lee Sin',
                 ),
@@ -55,7 +56,11 @@ class SignInScreen extends StatelessWidget {
               const SizedBox(height: 48),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(padding: EdgeInsets.zero),
-                onPressed: () {},
+                onPressed: () async {
+                  await _authController.signIn();
+
+                  if (_authController.hasClient) Get.offAll(() => HomeScreen());
+                },
                 child: Row(
                   children: [
                     Padding(

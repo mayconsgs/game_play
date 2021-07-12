@@ -8,7 +8,10 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
-        child: SvgPicture.asset('assets/svgs/logo.svg'),
+        child: SvgPicture.asset(
+          'assets/svgs/logo.svg',
+          width: MediaQuery.of(context).size.width * 0.785,
+        ),
       ),
     );
   }

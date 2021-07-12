@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:game_play/controllers/authController.dart';
 import 'package:game_play/screens/homeScreen.dart';
+import 'package:game_play/screens/signInScreen.dart';
+import 'package:game_play/screens/splashScreen.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
@@ -7,9 +11,11 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  final authController = Get.put(AuthController());
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'GamePlay',
       darkTheme: ThemeData(
         primaryColor: Color.fromARGB(255, 229, 28, 68),
@@ -40,6 +46,7 @@ class MyApp extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             textStyle: GoogleFonts.inter(fontSize: 15),
             elevation: 0,
+            shadowColor: Colors.transparent,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(8),
             ),
@@ -48,7 +55,19 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home: HomeScreen(),
+      themeMode: ThemeMode.dark,
+      home: FutureBuilder(
+        future: authController.createClient(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            if (authController.hasClient) return HomeScreen();
+
+            return SignInScreen();
+          }
+
+          return SplashScreen();
+        },
+      ),
     );
   }
 }
