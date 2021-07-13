@@ -1,21 +1,36 @@
 import 'dart:convert';
 
 class GuildModel {
-  final String _id;
+  String? _id;
+  String? get id => _id;
 
-  final String _name;
-  String get name => _name;
+  String? _name;
+  String? get name => _name;
 
-  final String _icon;
-  String get iconUrl => 'https://cdn.discordapp.com/icons/$_id/$_icon.png';
+  String? _icon;
+  String? get iconUrl => 'https://cdn.discordapp.com/icons/$_id/$_icon.png';
 
-  GuildModel(this._id, this._name, this._icon);
+  bool? _owner;
+  bool? get owner => _owner;
+
+  GuildModel({
+    String? id,
+    String? name,
+    String? icon,
+    bool? owner,
+  }) {
+    this._id = id;
+    this._name = name;
+    this._icon = icon;
+    this._owner = owner;
+  }
 
   factory GuildModel.fromMap(Map<String, dynamic> map) {
     return GuildModel(
-      map['id'],
-      map['name'],
-      map['icon'],
+      id: map['id'],
+      name: map['name'],
+      icon: map['icon'],
+      owner: map['owner'],
     );
   }
 

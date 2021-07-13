@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:game_play/controllers/authController.dart';
 import 'package:game_play/core/appImages.dart';
-import 'package:game_play/screens/homeScreen.dart';
 import 'package:get/get.dart';
 
 class SignInScreen extends StatelessWidget {
@@ -56,11 +55,7 @@ class SignInScreen extends StatelessWidget {
               const SizedBox(height: 48),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(padding: EdgeInsets.zero),
-                onPressed: () async {
-                  await _authController.signIn();
-
-                  if (_authController.hasClient) Get.offAll(() => HomeScreen());
-                },
+                onPressed: _authController.signIn,
                 child: Row(
                   children: [
                     Padding(

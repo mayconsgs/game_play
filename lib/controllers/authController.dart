@@ -14,7 +14,7 @@ class AuthController extends GetxController {
   final _authorizationEndpoint =
       Uri.https('discord.com', 'api/oauth2/authorize');
   final _tokenEndpoint = Uri.https('discord.com', 'api/oauth2/token');
-  final _redirectUri = Uri.parse('https://gameplay-auth.netlify.app');
+  final _redirectUri = Uri.https('gameplay-auth.netlify.app', '');
 
   final _secureStorage = FlutterSecureStorage();
 
@@ -28,7 +28,7 @@ class AuthController extends GetxController {
   List<GuildModel> get guildsList => _guildsList;
   bool get hasGuilds => _guildsList.length > 0;
 
-  Future<void> createClient() async {
+  Future<void> getCredentials() async {
     final discordCredential =
         await _secureStorage.read(key: 'discordCredential');
 
@@ -38,6 +38,10 @@ class AuthController extends GetxController {
       client = Client(credentials,
           identifier: SecretKeys.discordClientId,
           secret: SecretKeys.discordClientSecret);
+
+      if (hasClient) {
+        await getUserData();
+      }
     }
   }
 
@@ -56,7 +60,7 @@ class AuthController extends GetxController {
       await launch(authorizationUrl);
     }
 
-    await linkStream.listen((url) async {
+    linkStream.listen((url) async {
       if (url!.isNotEmpty && url.startsWith(_redirectUri.toString())) {
         final responseUrl = Uri.parse(url);
 
@@ -68,26 +72,24 @@ class AuthController extends GetxController {
           value: client!.credentials.toJson(),
         );
 
+        if (hasClient) {
+          await getUserData();
+        }
+
         Get.offAll(() => HomeScreen());
       }
-    }).asFuture();
+    });
   }
 
   Future<void> getUserData() async {
-    final userData =
-        await client!.read(Uri.https('discord.com', 'api/users/@me'));
+    final data = await Future.wait([
+      client!.read(Uri.https('discord.com', 'api/users/@me')),
+      client!.read(Uri.https('discord.com', 'api/users/@me/guilds'))
+    ]);
 
-    _user = UserModel.fromJson(userData);
-  }
+    _user = UserModel.fromJson(data[0]);
 
-  Future<void> getUserGuilds() async {
-    final data =
-        await client!.read(Uri.https('discord.com', 'api/users/@me/guilds'));
-
-    final List guilds = json.decode(data);
-
-    _guildsList.clear();
-    guilds.forEach((element) {
+    List.from(json.decode(data[1])).forEach((element) {
       _guildsList.add(GuildModel.fromMap(element));
     });
   }

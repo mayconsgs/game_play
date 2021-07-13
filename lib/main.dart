@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
       title: 'GamePlay',
       darkTheme: ThemeData(
         primaryColor: Color.fromARGB(255, 229, 28, 68),
+        primarySwatch: Colors.blue,
         backgroundColor: Color.fromARGB(255, 11, 16, 54),
         scaffoldBackgroundColor: Color.fromARGB(255, 11, 16, 54),
         textTheme: TextTheme(
@@ -55,10 +56,29 @@ class MyApp extends StatelessWidget {
           ),
         ),
         appBarTheme: AppBarTheme(backgroundColor: Color(0xFF1D2766)),
+        bottomSheetTheme: BottomSheetThemeData(
+          backgroundColor: Color.fromARGB(255, 11, 16, 54),
+        ),
+        inputDecorationTheme: InputDecorationTheme(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide(color: Color(0xFF243189)),
+          ),
+          focusedBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide(color: Color(0xFF243189)),
+          ),
+          enabledBorder: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(8),
+            borderSide: BorderSide(color: Color(0xFF243189)),
+          ),
+          fillColor: Color(0xFF1D2766),
+          filled: true,
+        ),
       ),
       themeMode: ThemeMode.dark,
       home: FutureBuilder(
-        future: authController.createClient(),
+        future: authController.getCredentials(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
             if (authController.hasClient) return HomeScreen();
