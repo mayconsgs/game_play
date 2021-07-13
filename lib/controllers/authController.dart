@@ -1,17 +1,14 @@
+import 'dart:convert';
+
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:game_play/core/secretKeys.dart';
+import 'package:game_play/models/guildModel.dart';
+import 'package:game_play/models/userModel.dart';
 import 'package:game_play/screens/homeScreen.dart';
 import 'package:get/get.dart';
 import 'package:oauth2/oauth2.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uni_links/uni_links.dart';
 import 'package:url_launcher/url_launcher.dart';
-
-enum AuthorizingState {
-  defaultState,
-  buildAuthorizationUrl,
-  requestAuthorization,
-  authorized,
-}
 
 class AuthController extends GetxController {
   final _authorizationEndpoint =
@@ -19,26 +16,28 @@ class AuthController extends GetxController {
   final _tokenEndpoint = Uri.https('discord.com', 'api/oauth2/token');
   final _redirectUri = Uri.parse('https://gameplay-auth.netlify.app');
 
-  late SharedPreferences _prefs;
+  final _secureStorage = FlutterSecureStorage();
 
-  final _authorizationState = Rx(AuthorizingState.defaultState);
-  AuthorizingState get authorizationState => _authorizationState.value;
+  Client? client;
+  bool get hasClient => client != null;
 
-  Client? _client;
-  bool get hasClient => _client != null;
+  late UserModel _user;
+  UserModel get user => _user;
+
+  final List<GuildModel> _guildsList = List.empty(growable: true);
+  List<GuildModel> get guildsList => _guildsList;
+  bool get hasGuilds => _guildsList.length > 0;
 
   Future<void> createClient() async {
-    _prefs = await SharedPreferences.getInstance();
-    final discordCredential = _prefs.getString('discordCredential');
+    final discordCredential =
+        await _secureStorage.read(key: 'discordCredential');
 
     if (discordCredential!.isNotEmpty) {
       final credentials = Credentials.fromJson(discordCredential);
 
-      _client = Client(credentials,
+      client = Client(credentials,
           identifier: SecretKeys.discordClientId,
           secret: SecretKeys.discordClientSecret);
-
-      return;
     }
   }
 
@@ -51,7 +50,7 @@ class AuthController extends GetxController {
     );
 
     final authorizationUrl = grant.getAuthorizationUrl(_redirectUri,
-        scopes: ['guilds', 'identify']).toString();
+        scopes: ['guilds', 'identify', 'email']).toString();
 
     if (await canLaunch(authorizationUrl)) {
       await launch(authorizationUrl);
@@ -61,13 +60,35 @@ class AuthController extends GetxController {
       if (url!.isNotEmpty && url.startsWith(_redirectUri.toString())) {
         final responseUrl = Uri.parse(url);
 
-        _client = await grant
+        client = await grant
             .handleAuthorizationResponse(responseUrl.queryParameters);
 
-        _prefs.setString('discordCredential', _client!.credentials.toJson());
+        await _secureStorage.write(
+          key: 'discordCredential',
+          value: client!.credentials.toJson(),
+        );
 
         Get.offAll(() => HomeScreen());
       }
     }).asFuture();
+  }
+
+  Future<void> getUserData() async {
+    final userData =
+        await client!.read(Uri.https('discord.com', 'api/users/@me'));
+
+    _user = UserModel.fromJson(userData);
+  }
+
+  Future<void> getUserGuilds() async {
+    final data =
+        await client!.read(Uri.https('discord.com', 'api/users/@me/guilds'));
+
+    final List guilds = json.decode(data);
+
+    _guildsList.clear();
+    guilds.forEach((element) {
+      _guildsList.add(GuildModel.fromMap(element));
+    });
   }
 }

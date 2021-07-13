@@ -1,11 +1,18 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:game_play/screens/createEventScreen.dart';
+import 'package:get/get.dart';
 
 class AppBarWidget extends PreferredSize {
   final Key? key;
   final BuildContext context;
+  final String username;
+  final String avatar;
 
-  AppBarWidget(
-    this.context, {
+  AppBarWidget({
+    required this.context,
+    required this.username,
+    required this.avatar,
     this.key,
   }) : super(
           preferredSize: const Size.fromHeight(96),
@@ -26,7 +33,7 @@ class AppBarWidget extends PreferredSize {
                         color: const Color.fromARGB(255, 36, 49, 137),
                       ),
                       image: DecorationImage(
-                        image: NetworkImage('http://github.com/mayconsgs.png'),
+                        image: CachedNetworkImageProvider(avatar),
                       ),
                     ),
                   ),
@@ -40,7 +47,7 @@ class AppBarWidget extends PreferredSize {
                           style: Theme.of(context).textTheme.headline5,
                           children: [
                             TextSpan(
-                              text: 'Maycon',
+                              text: username,
                               style: Theme.of(context)
                                   .textTheme
                                   .headline5!
@@ -66,7 +73,9 @@ class AppBarWidget extends PreferredSize {
                       color: Theme.of(context).primaryColor,
                     ),
                     child: IconButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Get.to(() => CreateEventScreen());
+                      },
                       splashRadius: 26,
                       color: Colors.white,
                       icon: Icon(

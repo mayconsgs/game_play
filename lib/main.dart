@@ -54,6 +54,7 @@ class MyApp extends StatelessWidget {
             primary: Color.fromARGB(255, 229, 28, 68),
           ),
         ),
+        appBarTheme: AppBarTheme(backgroundColor: Color(0xFF1D2766)),
       ),
       themeMode: ThemeMode.dark,
       home: FutureBuilder(
