@@ -34,10 +34,9 @@ class CreateEventScreen extends StatelessWidget {
                   return RadioButtonWidget(
                     iconPath: AppImages.rankingSvg,
                     text: 'Ranked',
-                    value: CategoryValues.ranked,
+                    value: Category.ranked,
                     onChanged: () {
-                      _createEventController
-                          .selectCategory(CategoryValues.ranked);
+                      _createEventController.selectCategory(Category.ranked);
                     },
                     groupValue: _createEventController.categorySelected,
                   );
@@ -47,10 +46,9 @@ class CreateEventScreen extends StatelessWidget {
                   return RadioButtonWidget(
                     iconPath: AppImages.espadasSvg,
                     text: 'Duelo',
-                    value: CategoryValues.duelo,
+                    value: Category.duel,
                     onChanged: () {
-                      _createEventController
-                          .selectCategory(CategoryValues.duelo);
+                      _createEventController.selectCategory(Category.duel);
                     },
                     groupValue: _createEventController.categorySelected,
                   );
@@ -60,10 +58,9 @@ class CreateEventScreen extends StatelessWidget {
                   return RadioButtonWidget(
                     iconPath: AppImages.controleSvg,
                     text: 'Diversão',
-                    value: CategoryValues.diversao,
+                    value: Category.joke,
                     onChanged: () {
-                      _createEventController
-                          .selectCategory(CategoryValues.diversao);
+                      _createEventController.selectCategory(Category.joke);
                     },
                     groupValue: _createEventController.categorySelected,
                   );
@@ -153,6 +150,97 @@ class CreateEventScreen extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
+              const Text('Dia e mês', style: TextStyle(fontSize: 18)),
+              const Text('Hora e minuto', style: TextStyle(fontSize: 18))
+            ],
+          ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              InkWell(onTap: () async {
+                await _createEventController.selectDate(context);
+              }, child: Obx(() {
+                return Row(
+                  children: [
+                    Container(
+                      height: 48,
+                      width: 48,
+                      decoration: BoxDecoration(
+                        color: Color(0xFF1D2766),
+                        border: Border.all(color: Color(0xFF243189)),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Center(
+                        child: Text(_createEventController.hasDate
+                            ? '${_createEventController.selectedDate!.day}'
+                            : ''),
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    Text('/', style: Theme.of(context).textTheme.subtitle1),
+                    const SizedBox(width: 4),
+                    Container(
+                      height: 48,
+                      width: 48,
+                      decoration: BoxDecoration(
+                        color: Color(0xFF1D2766),
+                        border: Border.all(color: Color(0xFF243189)),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Center(
+                        child: Text(_createEventController.hasDate
+                            ? '${_createEventController.selectedDate!.month}'
+                            : ''),
+                      ),
+                    ),
+                  ],
+                );
+              })),
+              InkWell(onTap: () async {
+                await _createEventController.selectTime(context);
+              }, child: Obx(() {
+                return Row(
+                  children: [
+                    Container(
+                      height: 48,
+                      width: 48,
+                      decoration: BoxDecoration(
+                        color: Color(0xFF1D2766),
+                        border: Border.all(color: Color(0xFF243189)),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Center(
+                        child: Text(_createEventController.hasTime
+                            ? '${_createEventController.selectedTime!.hour}'
+                            : ''),
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    Text(':', style: Theme.of(context).textTheme.subtitle1),
+                    const SizedBox(width: 4),
+                    Container(
+                      height: 48,
+                      width: 48,
+                      decoration: BoxDecoration(
+                        color: Color(0xFF1D2766),
+                        border: Border.all(color: Color(0xFF243189)),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Center(
+                        child: Text(_createEventController.hasTime
+                            ? '${_createEventController.selectedTime!.minute}'
+                            : ''),
+                      ),
+                    ),
+                  ],
+                );
+              })),
+            ],
+          ),
+          const SizedBox(height: 24),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
               Text('Descrição', style: TextStyle(fontSize: 18)),
               Text(
                 'Max 100 caracteres',
@@ -162,12 +250,18 @@ class CreateEventScreen extends StatelessWidget {
           ),
           const SizedBox(height: 12),
           TextFormField(
+            controller: _createEventController.descriptionController,
             minLines: 3,
             maxLines: 5,
             maxLength: 100,
           ),
           const SizedBox(height: 56),
-          ElevatedButton(onPressed: () {}, child: Text('Agendar'))
+          ElevatedButton(
+            onPressed: () async {
+              _createEventController.createEvent(_authController.user);
+            },
+            child: Text('Agendar'),
+          ),
         ],
       ),
     );

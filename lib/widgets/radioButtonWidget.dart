@@ -2,14 +2,37 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-enum CategoryValues { ranked, duelo, diversao, none }
+enum Category {
+  ranked,
+  duel,
+  joke,
+  none,
+}
+
+extension CategoryStringExt on String {
+  Category get parse => {
+        'ranked': Category.ranked,
+        'duel': Category.duel,
+        'joke': Category.joke,
+        'none': Category.none,
+      }[this]!;
+}
+
+extension CategoryExt on Category {
+  String get parse => {
+        Category.ranked: 'ranked',
+        Category.duel: 'duel',
+        Category.joke: 'joke',
+        Category.none: 'none',
+      }[this]!;
+}
 
 class RadioButtonWidget extends StatelessWidget {
   final String iconPath;
   final String text;
-  final CategoryValues value;
+  final Category value;
 
-  final CategoryValues? groupValue;
+  final Category? groupValue;
   final VoidCallback onChanged;
 
   const RadioButtonWidget({
@@ -19,7 +42,7 @@ class RadioButtonWidget extends StatelessWidget {
     required this.groupValue,
     required this.onChanged,
     Key? key,
-  })  : assert(value != CategoryValues.none),
+  })  : assert(value != Category.none),
         super(key: key);
 
   @override

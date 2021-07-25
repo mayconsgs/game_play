@@ -4,4 +4,5 @@
 class _SecretKeys {
   static String discordClientId = '';
   static String discordClientSecret = '';
+  static String apiUrl = '';
 }

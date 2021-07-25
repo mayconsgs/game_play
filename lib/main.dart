@@ -11,7 +11,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  final authController = Get.put(AuthController());
+  final _authController = Get.put(AuthController());
 
   @override
   Widget build(BuildContext context) {
@@ -23,11 +23,11 @@ class MyApp extends StatelessWidget {
         backgroundColor: Color.fromARGB(255, 11, 16, 54),
         scaffoldBackgroundColor: Color.fromARGB(255, 11, 16, 54),
         textTheme: TextTheme(
-          headline3: TextStyle(
+          headline3: GoogleFonts.rajdhani(
             color: Color.fromARGB(255, 221, 227, 240),
             fontWeight: FontWeight.bold,
           ),
-          headline5: TextStyle(
+          headline5: GoogleFonts.rajdhani(
             color: Color.fromARGB(255, 221, 227, 240),
             fontWeight: FontWeight.normal,
           ),
@@ -38,7 +38,7 @@ class MyApp extends StatelessWidget {
           bodyText1: GoogleFonts.inter(
             color: Color.fromARGB(255, 221, 227, 240),
           ),
-          bodyText2: TextStyle(
+          bodyText2: GoogleFonts.rajdhani(
             fontWeight: FontWeight.bold,
             color: Color.fromARGB(255, 221, 227, 240),
           ),
@@ -78,10 +78,10 @@ class MyApp extends StatelessWidget {
       ),
       themeMode: ThemeMode.dark,
       home: FutureBuilder(
-        future: authController.getCredentials(),
+        future: _authController.getCredentials(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.done) {
-            if (authController.hasClient) return HomeScreen();
+            if (_authController.hasClient) return HomeScreen();
 
             return SignInScreen();
           }

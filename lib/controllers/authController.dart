@@ -32,7 +32,7 @@ class AuthController extends GetxController {
     final discordCredential =
         await _secureStorage.read(key: 'discordCredential');
 
-    if (discordCredential!.isNotEmpty) {
+    if (discordCredential != null) {
       final credentials = Credentials.fromJson(discordCredential);
 
       client = Client(credentials,
@@ -82,15 +82,17 @@ class AuthController extends GetxController {
   }
 
   Future<void> getUserData() async {
-    final data = await Future.wait([
-      client!.read(Uri.https('discord.com', 'api/users/@me')),
-      client!.read(Uri.https('discord.com', 'api/users/@me/guilds'))
-    ]);
+    try {
+      final data = await Future.wait([
+        client!.read(Uri.https('discord.com', 'api/users/@me')),
+        client!.read(Uri.https('discord.com', 'api/users/@me/guilds'))
+      ]);
 
-    _user = UserModel.fromJson(data[0]);
+      _user = UserModel.fromJson(data[0]);
 
-    List.from(json.decode(data[1])).forEach((element) {
-      _guildsList.add(GuildModel.fromMap(element));
-    });
+      List.from(json.decode(data[1])).forEach((element) {
+        _guildsList.add(GuildModel.fromMap(element));
+      });
+    } catch (e) {}
   }
 }

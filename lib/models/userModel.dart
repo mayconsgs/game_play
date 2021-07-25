@@ -2,6 +2,7 @@ import 'dart:convert';
 
 class UserModel {
   final String _id;
+  String get id => _id;
 
   final String _username;
   String get username => _username;
