@@ -15,7 +15,7 @@ class AppBarWidget extends PreferredSize {
     required this.avatar,
     this.key,
   }) : super(
-          preferredSize: const Size.fromHeight(96),
+          preferredSize: const Size.fromHeight(104),
           key: key,
           child: SafeArea(
             top: true,

@@ -25,6 +25,15 @@ class GuildModel {
     this._owner = owner;
   }
 
+  Map<String, dynamic> toMap() {
+    return {
+      'id': _id,
+      'name': _name,
+      'icon': _icon,
+      'owner': _owner,
+    };
+  }
+
   factory GuildModel.fromMap(Map<String, dynamic> map) {
     return GuildModel(
       id: map['id'],
@@ -33,6 +42,8 @@ class GuildModel {
       owner: map['owner'],
     );
   }
+
+  String toJson() => json.encode(toMap());
 
   factory GuildModel.fromJson(String source) =>
       GuildModel.fromMap(json.decode(source));

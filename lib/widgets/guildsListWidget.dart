@@ -4,11 +4,11 @@ import 'package:game_play/controllers/authController.dart';
 import 'package:game_play/controllers/createEventController.dart';
 import 'package:get/get.dart';
 
-class ListViewWidget extends StatelessWidget {
+class GuildsListWidget extends StatelessWidget {
   final AuthController _authController = Get.find();
   final CreateEventController createEventController;
 
-  ListViewWidget({
+  GuildsListWidget({
     Key? key,
     required this.createEventController,
   }) : super(key: key);

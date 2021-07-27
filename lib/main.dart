@@ -32,9 +32,10 @@ class MyApp extends StatelessWidget {
             fontWeight: FontWeight.normal,
           ),
           subtitle1: GoogleFonts.inter(
-              color: Color.fromARGB(255, 171, 177, 204),
-              fontSize: 13,
-              fontWeight: FontWeight.normal),
+            color: Color.fromARGB(255, 171, 177, 204),
+            fontSize: 13,
+            fontWeight: FontWeight.normal,
+          ),
           bodyText1: GoogleFonts.inter(
             color: Color.fromARGB(255, 221, 227, 240),
           ),

@@ -10,7 +10,7 @@ enum Category {
 }
 
 extension CategoryStringExt on String {
-  Category get parse => {
+  Category get toCategory => {
         'ranked': Category.ranked,
         'duel': Category.duel,
         'joke': Category.joke,
@@ -19,7 +19,7 @@ extension CategoryStringExt on String {
 }
 
 extension CategoryExt on Category {
-  String get parse => {
+  String get string => {
         Category.ranked: 'ranked',
         Category.duel: 'duel',
         Category.joke: 'joke',

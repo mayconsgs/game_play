@@ -71,7 +71,7 @@ class CreateEventController extends GetxController {
       'idOwner': user.id,
       'schedule': selectedDateTime.toString(),
       'category': _categorySelected.value != null
-          ? _categorySelected.value!.parse
+          ? _categorySelected.value!.toString
           : null,
       'description': descriptionController.text,
       'participants': [user.id],

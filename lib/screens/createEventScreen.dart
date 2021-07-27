@@ -74,7 +74,7 @@ class CreateEventScreen extends StatelessWidget {
               showModalBottomSheet(
                 context: context,
                 builder: (context) {
-                  return ListViewWidget(
+                  return GuildsListWidget(
                     createEventController: _createEventController,
                   );
                 },
